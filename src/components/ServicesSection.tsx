@@ -1,33 +1,19 @@
-import { Activity, Dumbbell, Sparkles, Users } from "lucide-react";
+import { Activity, Dumbbell, Sparkles, Users, Heart, Shield, Zap, Star } from "lucide-react";
+import { useServices } from "@/hooks/useServices";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
-const services = [
-  {
-    icon: Activity,
-    title: "Liberação Miofascial",
-    description: "Técnica avançada para alívio de tensões profundas, restaurando a mobilidade e eliminando dores crônicas com precisão.",
-  },
-  {
-    icon: Dumbbell,
-    title: "Fisioterapia Desportiva",
-    description: "Reabilitação e prevenção de lesões para atletas de alto rendimento, com protocolos personalizados de recuperação.",
-  },
-  {
-    icon: Sparkles,
-    title: "Estética de Alta Performance",
-    description: "Drenagem linfática, massagem modeladora, eletrolipólise e protocolos estéticos com tecnologia de ponta.",
-  },
-  {
-    icon: Users,
-    title: "Atendimento para Atletas",
-    description: "Acompanhamento exclusivo para atletas profissionais e amadores, focado em performance e recuperação acelerada.",
-  },
-];
+const iconMap: Record<string, any> = { Activity, Dumbbell, Sparkles, Users, Heart, Shield, Zap, Star };
 
 const ServicesSection = () => {
+  const { data: services, isLoading } = useServices();
+  const { ref, isVisible } = useScrollAnimation();
+
+  const items = services || [];
+
   return (
-    <section id="servicos" className="py-24 md:py-32">
+    <section id="servicos" className="py-24 md:py-32" ref={ref}>
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+        <div className={`text-center max-w-2xl mx-auto mb-16 space-y-4 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <p className="text-gold text-sm tracking-[0.3em] uppercase font-body font-medium">
             Especialidades
           </p>
@@ -40,21 +26,32 @@ const ServicesSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {services.map((service, index) => (
-            <div
-              key={service.title}
-              className="group p-8 bg-card border border-border rounded-sm hover:border-gold/40 hover:gold-glow transition-all duration-500"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <service.icon className="text-gold mb-6" size={32} strokeWidth={1.5} />
-              <h3 className="font-heading text-xl font-semibold mb-3">
-                {service.title}
-              </h3>
-              <p className="text-muted-foreground font-body font-light leading-relaxed text-sm">
-                {service.description}
-              </p>
-            </div>
-          ))}
+          {isLoading
+            ? Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="p-8 rounded-2xl bg-card/50 border border-border animate-pulse h-48" />
+              ))
+            : items.map((service, index) => {
+                const Icon = iconMap[service.icon_name] || Activity;
+                return (
+                  <div
+                    key={service.id}
+                    className={`group p-8 rounded-2xl glass border border-border/50 hover:border-gold/40 hover:gold-glow transition-all duration-500 ${
+                      isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                    }`}
+                    style={{ transitionDelay: `${index * 100 + 200}ms` }}
+                  >
+                    <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                      <Icon className="text-gold" size={28} strokeWidth={1.5} />
+                    </div>
+                    <h3 className="font-heading text-xl font-semibold mb-3">
+                      {service.title}
+                    </h3>
+                    <p className="text-muted-foreground font-body font-light leading-relaxed text-sm">
+                      {service.description}
+                    </p>
+                  </div>
+                );
+              })}
         </div>
       </div>
     </section>

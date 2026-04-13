@@ -1,4 +1,5 @@
 import { Star, Quote } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const testimonials = [
   {
@@ -19,10 +20,12 @@ const testimonials = [
 ];
 
 const TestimonialsSection = () => {
+  const { ref, isVisible } = useScrollAnimation();
+
   return (
-    <section id="depoimentos" className="py-24 md:py-32">
+    <section id="depoimentos" className="py-24 md:py-32" ref={ref}>
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+        <div className={`text-center max-w-2xl mx-auto mb-16 space-y-4 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <p className="text-gold text-sm tracking-[0.3em] uppercase font-body font-medium">
             Feedback
           </p>
@@ -32,10 +35,13 @@ const TestimonialsSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {testimonials.map((t) => (
+          {testimonials.map((t, index) => (
             <div
               key={t.name}
-              className="p-8 bg-card border border-border rounded-sm space-y-4 hover:border-gold/30 transition-colors duration-300"
+              className={`p-8 rounded-2xl glass border border-border/50 space-y-4 hover:border-gold/30 hover:gold-glow transition-all duration-500 ${
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
+              style={{ transitionDelay: `${index * 100 + 200}ms` }}
             >
               <Quote className="text-gold/40" size={32} strokeWidth={1.5} />
               <p className="text-muted-foreground font-body font-light leading-relaxed text-sm italic">
