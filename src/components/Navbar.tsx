@@ -22,6 +22,7 @@ const Navbar = () => {
   const links = [
     { label: "Início", href: "#hero" },
     { label: "Serviços", href: "#servicos" },
+    { label: "Performance", href: "#performance" },
     { label: "Cursos", href: "#cursos" },
     { label: "Depoimentos", href: "#depoimentos" },
     { label: "Contato", href: "#contato" },

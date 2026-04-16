@@ -57,9 +57,12 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-border text-center">
+        <div className="pt-8 border-t border-border text-center space-y-2">
           <p className="text-xs text-muted-foreground font-body">
             © {new Date().getFullYear()} {siteName} — Todos os direitos reservados
+          </p>
+          <p className="text-[11px] text-muted-foreground/50 font-body tracking-wider">
+            Desenvolvido por <span className="text-gold/70 font-medium">Michael Pithon</span>
           </p>
         </div>
       </div>
