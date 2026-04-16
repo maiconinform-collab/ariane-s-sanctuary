@@ -56,6 +56,126 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      horarios: {
+        Row: {
+          created_at: string
+          day_of_week: string
+          end_time: string
+          id: string
+          is_active: boolean
+          start_time: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          day_of_week: string
+          end_time?: string
+          id?: string
+          is_active?: boolean
+          start_time?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          day_of_week?: string
+          end_time?: string
+          id?: string
+          is_active?: boolean
+          start_time?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          is_read: boolean
+          message: string
+          name: string
+          phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_read?: boolean
+          message: string
+          name: string
+          phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_read?: boolean
+          message?: string
+          name?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          author_name: string
+          content: string
+          created_at: string
+          id: string
+          is_approved: boolean
+          rating: number
+          updated_at: string
+        }
+        Insert: {
+          author_name: string
+          content: string
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          rating?: number
+          updated_at?: string
+        }
+        Update: {
+          author_name?: string
+          content?: string
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          rating?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       services: {
         Row: {
           created_at: string
@@ -94,6 +214,7 @@ export type Database = {
       }
       site_settings: {
         Row: {
+          address: string
           color_background: string
           color_primary: string
           color_secondary: string
@@ -101,11 +222,14 @@ export type Database = {
           font_body: string
           font_heading: string
           id: string
+          instagram: string
           site_name: string
           slogan: string
           updated_at: string
+          whatsapp: string
         }
         Insert: {
+          address?: string
           color_background?: string
           color_primary?: string
           color_secondary?: string
@@ -113,11 +237,14 @@ export type Database = {
           font_body?: string
           font_heading?: string
           id?: string
+          instagram?: string
           site_name?: string
           slogan?: string
           updated_at?: string
+          whatsapp?: string
         }
         Update: {
+          address?: string
           color_background?: string
           color_primary?: string
           color_secondary?: string
@@ -125,9 +252,11 @@ export type Database = {
           font_body?: string
           font_heading?: string
           id?: string
+          instagram?: string
           site_name?: string
           slogan?: string
           updated_at?: string
+          whatsapp?: string
         }
         Relationships: []
       }
