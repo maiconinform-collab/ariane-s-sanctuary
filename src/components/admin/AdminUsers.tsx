@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { UserPlus, Trash2, Shield } from "lucide-react";
+import { UserPlus, Shield } from "lucide-react";
 
 interface Props {
   queryClient: any;
@@ -13,33 +13,19 @@ export default function AdminUsers({ queryClient, toast }: Props) {
   const [creating, setCreating] = useState(false);
 
   const handleCreate = async () => {
-    if (!email || !password) return;
+    if (!email || !password || password.length < 6) return;
     setCreating(true);
 
-    // Sign up the user
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { emailRedirectTo: window.location.origin },
+    const { data, error } = await supabase.functions.invoke("create-admin-user", {
+      body: { email, password },
     });
 
     if (error) {
       toast({ title: "Erro", description: error.message, variant: "destructive" });
-      setCreating(false);
-      return;
-    }
-
-    if (data.user) {
-      // Assign admin role
-      const { error: roleError } = await supabase.from("user_roles").insert({
-        user_id: data.user.id,
-        role: "admin" as const,
-      });
-      if (roleError) {
-        toast({ title: "Usuário criado, mas erro ao atribuir role", description: roleError.message, variant: "destructive" });
-      } else {
-        toast({ title: "Admin criado!", description: `${email} agora é administrador.` });
-      }
+    } else if (data?.error) {
+      toast({ title: "Erro", description: data.error, variant: "destructive" });
+    } else {
+      toast({ title: "Admin criado!", description: `${email} agora é administrador.` });
     }
 
     setEmail("");
