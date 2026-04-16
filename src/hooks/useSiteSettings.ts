@@ -10,6 +10,9 @@ export interface SiteSettings {
   color_primary: string;
   color_secondary: string;
   color_background: string;
+  whatsapp: string;
+  address: string;
+  instagram: string;
 }
 
 export function useSiteSettings() {
@@ -20,9 +23,9 @@ export function useSiteSettings() {
         .from("site_settings")
         .select("*")
         .limit(1)
-        .single();
+        .maybeSingle();
       if (error) throw error;
-      return data as SiteSettings;
+      return data as SiteSettings | null;
     },
   });
 }
