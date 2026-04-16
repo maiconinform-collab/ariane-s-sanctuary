@@ -1,14 +1,29 @@
 import { Instagram, Phone, MapPin } from "lucide-react";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const Footer = () => {
+  const { data: settings } = useSiteSettings();
+  const siteName = settings?.site_name || "Ariane Moreira";
+  const whatsapp = settings?.whatsapp || "5575981465876";
+  const instagram = settings?.instagram || "@fisio.arimoreira";
+  const address = settings?.address || "Salvador, BA";
+
+  const phoneFormatted = whatsapp.replace(/^55(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+  const instagramHandle = instagram.startsWith("@") ? instagram : `@${instagram}`;
+  const instagramUrl = `https://instagram.com/${instagramHandle.replace("@", "")}`;
+
+  const nameParts = siteName.split(" ");
+  const firstName = nameParts[0];
+  const lastName = nameParts.slice(1).join(" ");
+
   return (
     <footer id="contato" className="py-16 border-t border-border">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           <div className="space-y-4">
             <h3 className="font-heading text-xl font-semibold">
-              <span className="text-foreground">Ariane</span>{" "}
-              <span className="text-gold">Moreira</span>
+              <span className="text-foreground">{firstName}</span>{" "}
+              <span className="text-gold">{lastName}</span>
             </h3>
             <p className="text-muted-foreground font-body font-light text-sm leading-relaxed">
               Fisioterapeuta especializada em alta performance, estética e bem-estar integrativo.
@@ -18,17 +33,17 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="font-heading text-sm tracking-widest uppercase text-gold">Contato</h4>
             <div className="space-y-3 text-sm text-muted-foreground font-body">
-              <a href="tel:+5575981465876" className="flex items-center gap-3 hover:text-gold transition-colors">
+              <a href={`tel:+${whatsapp}`} className="flex items-center gap-3 hover:text-gold transition-colors">
                 <Phone size={16} className="text-gold" strokeWidth={1.5} />
-                (75) 98146-5876
+                {phoneFormatted}
               </a>
-              <a href="https://instagram.com/fisio.arimoreira" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-gold transition-colors">
+              <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-gold transition-colors">
                 <Instagram size={16} className="text-gold" strokeWidth={1.5} />
-                @fisio.arimoreira
+                {instagramHandle}
               </a>
               <div className="flex items-center gap-3">
                 <MapPin size={16} className="text-gold" strokeWidth={1.5} />
-                Feira de Santana, BA
+                {address}
               </div>
             </div>
           </div>
@@ -44,7 +59,7 @@ const Footer = () => {
 
         <div className="pt-8 border-t border-border text-center">
           <p className="text-xs text-muted-foreground font-body">
-            © {new Date().getFullYear()} Ariane Moreira — Todos os direitos reservados
+            © {new Date().getFullYear()} {siteName} — Todos os direitos reservados
           </p>
         </div>
       </div>
