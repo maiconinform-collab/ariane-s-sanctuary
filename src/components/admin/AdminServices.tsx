@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Plus, Edit2, Trash2, Check, X } from "lucide-react";
+import ImageUpload from "./ImageUpload";
 
 const iconOptions = ["Activity", "Dumbbell", "Sparkles", "Users", "Heart", "Shield", "Zap", "Star"];
 
@@ -12,7 +13,7 @@ interface Props {
 
 export default function AdminServices({ services, queryClient, toast }: Props) {
   const [editing, setEditing] = useState<string | null>(null);
-  const [form, setForm] = useState({ title: "", description: "", detailed_text: "", icon_name: "Activity" });
+  const [form, setForm] = useState<any>({ title: "", description: "", detailed_text: "", icon_name: "Activity", image_url: null });
   const [showNew, setShowNew] = useState(false);
 
   const handleSave = async (id?: string) => {
@@ -23,7 +24,7 @@ export default function AdminServices({ services, queryClient, toast }: Props) {
     } else {
       const { error } = await supabase.from("services").insert({ ...form, sort_order: services.length });
       if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
-      else { toast({ title: "Adicionado!" }); setShowNew(false); setForm({ title: "", description: "", detailed_text: "", icon_name: "Activity" }); }
+      else { toast({ title: "Adicionado!" }); setShowNew(false); setForm({ title: "", description: "", detailed_text: "", icon_name: "Activity", image_url: null }); }
     }
     queryClient.invalidateQueries({ queryKey: ["services"] });
   };
@@ -38,7 +39,7 @@ export default function AdminServices({ services, queryClient, toast }: Props) {
     <div className="max-w-3xl space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="font-heading text-xl">Serviços</h2>
-        <button onClick={() => { setShowNew(true); setForm({ title: "", description: "", detailed_text: "", icon_name: "Activity" }); }} className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground text-sm font-body rounded-xl">
+        <button onClick={() => { setShowNew(true); setForm({ title: "", description: "", detailed_text: "", icon_name: "Activity", image_url: null }); }} className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground text-sm font-body rounded-xl">
           <Plus size={16} /> Novo
         </button>
       </div>
@@ -58,7 +59,7 @@ export default function AdminServices({ services, queryClient, toast }: Props) {
                 <p className="text-sm text-muted-foreground font-body">{s.description}</p>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => { setEditing(s.id); setForm({ title: s.title, description: s.description, detailed_text: s.detailed_text || "", icon_name: s.icon_name }); }} className="p-2 text-muted-foreground hover:text-gold"><Edit2 size={16} /></button>
+                <button onClick={() => { setEditing(s.id); setForm({ title: s.title, description: s.description, detailed_text: s.detailed_text || "", icon_name: s.icon_name, image_url: s.image_url || null }); }} className="p-2 text-muted-foreground hover:text-gold"><Edit2 size={16} /></button>
                 <button onClick={() => handleDelete(s.id)} className="p-2 text-muted-foreground hover:text-destructive"><Trash2 size={16} /></button>
               </div>
             </div>
@@ -78,6 +79,10 @@ function ItemForm({ form, setForm, iconOptions, onSave, onCancel }: any) {
       <select value={form.icon_name} onChange={(e) => setForm({ ...form, icon_name: e.target.value })} className="px-4 py-2 bg-secondary border border-border rounded-xl text-foreground font-body text-sm focus:outline-none focus:border-gold">
         {iconOptions.map((i: string) => <option key={i} value={i}>{i}</option>)}
       </select>
+      <div>
+        <label className="text-xs text-muted-foreground font-body block mb-2">Imagem (opcional)</label>
+        <ImageUpload value={form.image_url} onChange={(url) => setForm({ ...form, image_url: url })} folder="services" />
+      </div>
       <div className="flex gap-2">
         <button onClick={onSave} className="flex items-center gap-1 px-4 py-2 bg-primary text-primary-foreground text-sm font-body rounded-xl"><Check size={14} /> Salvar</button>
         <button onClick={onCancel} className="flex items-center gap-1 px-4 py-2 bg-secondary text-foreground text-sm font-body rounded-xl"><X size={14} /> Cancelar</button>
