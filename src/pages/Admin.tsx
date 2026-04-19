@@ -7,13 +7,14 @@ import { useServices } from "@/hooks/useServices";
 import { useCourses } from "@/hooks/useCourses";
 import { useReviews } from "@/hooks/useReviews";
 import { useQueryClient } from "@tanstack/react-query";
-import { LogOut, Settings, BookOpen, Briefcase, Star, Users } from "lucide-react";
+import { LogOut, Settings, BookOpen, Briefcase, Star, Users, KeyRound } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import AdminSettings from "@/components/admin/AdminSettings";
 import AdminServices from "@/components/admin/AdminServices";
 import AdminCourses from "@/components/admin/AdminCourses";
 import AdminReviews from "@/components/admin/AdminReviews";
 import AdminUsers from "@/components/admin/AdminUsers";
+import AdminChangePassword from "@/components/admin/AdminChangePassword";
 
 const Admin = () => {
   const { user, isAdmin, loading } = useAuth();
@@ -38,6 +39,7 @@ const Admin = () => {
     { id: "services", label: "Serviços", icon: Briefcase },
     { id: "courses", label: "Cursos", icon: BookOpen },
     { id: "reviews", label: "Avaliações", icon: Star },
+    { id: "password", label: "Alterar Senha", icon: KeyRound },
     ...(isSuperAdmin ? [{ id: "users", label: "Usuários", icon: Users }] : []),
   ];
 
@@ -90,6 +92,9 @@ const Admin = () => {
         )}
         {activeTab === "reviews" && (
           <AdminReviews reviews={reviews || []} queryClient={queryClient} toast={toast} />
+        )}
+        {activeTab === "password" && (
+          <AdminChangePassword toast={toast} />
         )}
         {activeTab === "users" && isSuperAdmin && (
           <AdminUsers queryClient={queryClient} toast={toast} />

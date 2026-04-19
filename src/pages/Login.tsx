@@ -20,6 +20,19 @@ const Login = () => {
     if (!authLoading && user && isAdmin) navigate("/admin");
   }, [user, isAdmin, authLoading, navigate]);
 
+  const handleForgot = async () => {
+    setError("");
+    setMessage("");
+    if (!email) return setError("Digite seu e-mail acima primeiro.");
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (error) setError(error.message);
+    else setMessage("Enviamos um link de redefinição para seu e-mail.");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -91,6 +104,16 @@ const Login = () => {
             <LogIn size={16} />
             {loading ? "Carregando..." : isSignUp ? "Cadastrar" : "Entrar"}
           </button>
+
+          {!isSignUp && (
+            <button
+              type="button"
+              onClick={handleForgot}
+              className="block w-full text-center text-xs text-muted-foreground hover:text-gold font-body transition-colors"
+            >
+              Esqueceu sua senha?
+            </button>
+          )}
 
           <p className="text-center text-sm text-muted-foreground font-body">
             {isSignUp ? "Já tem conta?" : "Não tem conta?"}{" "}
