@@ -1,4 +1,5 @@
-import { Instagram, Phone, MapPin } from "lucide-react";
+import { Instagram, Phone, MapPin, Lock } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const Footer = () => {
@@ -64,6 +65,15 @@ const Footer = () => {
           <p className="text-[11px] text-muted-foreground/50 font-body tracking-wider">
             Desenvolvido por <span className="text-gold/70 font-medium">Michael Pithon</span>
           </p>
+          <div className="pt-3">
+            <Link
+              to="/login"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/30 text-gold/80 hover:text-gold hover:border-gold/60 hover:bg-gold/5 transition-all font-body text-xs tracking-widest uppercase"
+            >
+              <Lock size={12} strokeWidth={1.5} />
+              Área Administrativa
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
